@@ -15,16 +15,17 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping(value = "/credit")
-    public ResponseEntity creditMoney(@RequestBody Transaction transaction){
+    public ResponseEntity creditMoney(@RequestBody Transaction transaction) {
         transactionService.creditMoney(transaction);
         return new ResponseEntity("Transfer is successful", HttpStatus.OK);
     }
 
     @PostMapping(value = "/debit")
-    public ResponseEntity debitMoney(@RequestBody Transaction transaction){
+    public ResponseEntity debitMoney(@RequestBody Transaction transaction) {
         transactionService.debitMoney(transaction);
         return new ResponseEntity("Transfer is successful", HttpStatus.OK);
     }
+
     @ExceptionHandler(RuntimeException.class)
     public final ResponseEntity<Exception> handleAllExceptions(RuntimeException ex) {
         return new ResponseEntity<Exception>(ex, HttpStatus.INTERNAL_SERVER_ERROR);

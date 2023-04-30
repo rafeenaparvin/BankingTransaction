@@ -18,9 +18,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired
     private AccountRepository accountRepository;
 
-    public BigDecimal convertMoney(Transaction transaction){
+    public BigDecimal convertMoney(Transaction transaction) {
         double rate;
-        switch(transaction.getCurrency()){
+        switch (transaction.getCurrency()) {
             case "USD":
                 rate = 1.0;
                 break;
@@ -44,11 +44,13 @@ public class TransactionServiceImpl implements TransactionService {
         }
         return transaction.getAmount().multiply(BigDecimal.valueOf(rate));
     }
+
     @Override
     public void creditMoney(Transaction transaction) {
         BigDecimal finalAmount = convertMoney(transaction);
-        Optional<Account> accountOptional = Optional.ofNullable(accountRepository.findByAccountNumber(transaction.getSourceAccountId()));
-        if(accountOptional.isPresent()){
+        Optional<Account> accountOptional = Optional.ofNullable(accountRepository
+                .findByAccountNumber(transaction.getSourceAccountId()));
+        if (accountOptional.isPresent()) {
             Account account = accountOptional.get();
             account.setBalance(account.getBalance().add(finalAmount));
             accountRepository.save(account);
@@ -58,8 +60,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public void debitMoney(Transaction transaction) {
         BigDecimal finalAmount = convertMoney(transaction);
-        Optional<Account> accountOptional = Optional.ofNullable(accountRepository.findByAccountNumber(transaction.getSourceAccountId()));
-        if(accountOptional.isPresent()){
+        Optional<Account> accountOptional = Optional.ofNullable(
+                accountRepository.findByAccountNumber(transaction.getSourceAccountId()));
+        if (accountOptional.isPresent()) {
             Account account = accountOptional.get();
             account.setBalance(account.getBalance().subtract(finalAmount));
             accountRepository.save(account);
