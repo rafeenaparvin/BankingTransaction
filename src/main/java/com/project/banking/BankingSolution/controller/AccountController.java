@@ -31,7 +31,8 @@ public class AccountController {
 
     @PostMapping(value = "/transfer")
     @ApiOperation("Transfer money from one account to another")
-    @ApiResponses({@ApiResponse(code = 200, message = "Money transfer successful", responseContainer = "List", response = Transaction.class)})
+    @ApiResponses({@ApiResponse(code = 200, message = "Money transfer successful",
+            responseContainer = "List", response = Transaction.class)})
     public ResponseEntity sendMoney(@Validated @RequestBody Transfer transfer) {
         Long id = accountService.sendMoney(transfer);
         return new ResponseEntity<>("Transaction Successful - Transaction Number is " + id, HttpStatus.OK);

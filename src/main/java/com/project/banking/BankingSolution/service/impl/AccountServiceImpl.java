@@ -25,7 +25,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public String save(Account account) {
-
         account.setAccountNumber("BS0000" + count++);
         Account accountFromDB = accountRepository.save(account);
         Transaction transaction = new Transaction();
@@ -41,13 +40,10 @@ public class AccountServiceImpl implements AccountService {
         String sourceAccountNumber = transfer.getSourceAccountNumber();
         String beneficiaryAccountNumber = transfer.getBeneficiaryAccountNumber();
         BigDecimal amount = transfer.getAmount();
-
         Account sourceAccount = accountRepository.findByAccountNumber(sourceAccountNumber);
         Account beneficiaryAccount = accountRepository.findByAccountNumber(beneficiaryAccountNumber);
 
         if (sourceAccount.getBalance().compareTo(amount) > 0) {
-            System.out.println("Inside If true condition");
-
             sourceAccount.setBalance(sourceAccount.getBalance().subtract(amount));
             accountRepository.save(sourceAccount);
 
@@ -59,7 +55,6 @@ public class AccountServiceImpl implements AccountService {
             transactionRepository.save(new Transaction(0l, beneficiaryAccountNumber, amount, "USD",
                     TransactionType.CREDIT.toString()));
             return transaction.getTransactionId();
-
         }
         return null;
     }
