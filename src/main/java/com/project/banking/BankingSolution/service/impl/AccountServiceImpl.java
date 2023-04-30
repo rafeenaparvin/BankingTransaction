@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Transactional
 @Service
@@ -21,11 +22,10 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
     @Autowired
     private TransactionRepository transactionRepository;
-    static int count = 1;
 
     @Override
     public String save(Account account) {
-        account.setAccountNumber("BS0000" + count++);
+        account.setAccountNumber(UUID.randomUUID().toString());
         Account accountFromDB = accountRepository.save(account);
         Transaction transaction = new Transaction();
         transaction.setAccountNumber(accountFromDB.getAccountNumber());
